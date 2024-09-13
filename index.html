@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horror Quiz Box</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Baloo 2', sans-serif; /* Balloon-like font */
+            background-color: #5CE1E6; /* Updated background color */
+            color: black;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        #quiz-headings {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #quiz-headings h1 {
+            font-size: 36px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0;
+            color: #333;
+            font-family: 'Baloo 2', sans-serif; /* Balloon-like font */
+        }
+
+        #yellow-box {
+            width: 200px;
+            height: 200px;
+            background-color: yellow;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 15px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+            text-transform: uppercase; /* Capitalize text */
+        }
+
+        .color-boxes {
+            display: flex;
+            justify-content: space-between;
+            width: 220px;
+        }
+
+        .color-box {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+        }
+
+        #green-box {
+            background-color: green;
+        }
+
+        #orange-box {
+            background-color: orange;
+        }
+
+        #red-box {
+            background-color: red;
+        }
+
+        #purple-box {
+            background-color: purple;
+        }
+
+        #question-answer {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="quiz-headings">
+        <h1>Quizheads</h1>
+    </div>
+
+    <div id="yellow-box">Horror</div>
+
+    <div class="color-boxes">
+        <div id="green-box" class="color-box"></div>
+        <div id="orange-box" class="color-box"></div>
+        <div id="red-box" class="color-box"></div>
+        <div id="purple-box" class="color-box"></div>
+    </div>
+
+    <div id="question-answer"></div>
+
+    <script>
+        const yellowBox = document.getElementById("yellow-box");
+        const greenBox = document.getElementById("green-box");
+        const orangeBox = document.getElementById("orange-box");
+        const redBox = document.getElementById("red-box");
+        const purpleBox = document.getElementById("purple-box");
+        const questionAnswerDiv = document.getElementById("question-answer");
+
+        // Array of horror trivia questions and answers
+        const horrorQuestions = [
+            { question: "What is the name of the killer in Halloween?", answer: "Michael Myers" },
+            { question: "Who directed the movie 'Psycho'?", answer: "Alfred Hitchcock" },
+            { question: "In 'The Shining', what is the famous phrase Jack Nicholson's character writes?", answer: "'All work and no play makes Jack a dull boy.'" },
+            { question: "What 1973 horror movie was banned in several countries for its graphic content?", answer: "The Exorcist" },
+            { question: "Which horror film features a serial killer wearing a William Shatner mask?", answer: "Halloween" },
+            { question: "What is the name of the demon in The Exorcist?", answer: "Pazuzu" },
+            { question: "In what year was 'The Texas Chain Saw Massacre' released?", answer: "1974" },
+            { question: "Which movie is known for the quote 'Do you like scary movies?'", answer: "Scream" },
+            { question: "What is the name of the camp in 'Friday the 13th'?", answer: "Camp Crystal Lake" },
+            { question: "Who directed the 1979 horror film 'Alien'?", answer: "Ridley Scott" },
+            { question: "What horror movie features a haunted video tape?", answer: "The Ring" },
+            { question: "Who is the main villain in 'A Nightmare on Elm Street'?", answer: "Freddy Krueger" },
+            { question: "Which Stephen King novel was made into a 2017 horror film starring Bill Skarsgård?", answer: "It" },
+            { question: "What is the name of the hotel in 'The Shining'?", answer: "The Overlook Hotel" },
+            { question: "What is the name of the clown in Stephen King's 'It'?", answer: "Pennywise" },
+            { question: "Which horror movie is set at 112 Ocean Avenue, Long Island?", answer: "The Amityville Horror" },
+            { question: "Which 2018 film centers on a family who cannot make noise?", answer: "A Quiet Place" },
+            { question: "In 'The Conjuring', who are the main paranormal investigators?", answer: "Ed and Lorraine Warren" },
+            { question: "Which horror movie is famous for the line 'Here’s Johnny!'?", answer: "The Shining" },
+            // Add the additional questions here
+            { question: "What is the name of the possessed doll in 'The Conjuring'?", answer: "Annabelle" },
+            { question: "In 'The Exorcism of Emily Rose', what is the girl's name?", answer: "Emily Rose" },
+            { question: "Which horror film involves a haunted house with a sinister presence and a family who moves in?", answer: "The Haunting" },
+            { question: "In 'The Witch', what is the family's main concern?", answer: "Witchcraft and the supernatural" },
+            { question: "What is the name of the entity in 'It'?", answer: "Pennywise" },
+            { question: "In 'The Descent', what are the explorers searching for?", answer: "A lost cave system" },
+            { question: "Which horror movie is set in a small town and features a haunted doll?", answer: "Annabelle" },
+            { question: "What is the name of the entity in 'The Babadook'?", answer: "The Babadook" },
+            { question: "In 'The Grudge', what is the nature of the curse?", answer: "A vengeful spirit that causes supernatural events" },
+            { question: "What is the name of the house in 'The Haunting of Hill House'?", answer: "Hill House" },
+            { question: "In 'The Witch', what is the family's main fear?", answer: "Witchcraft and the supernatural" },
+            { question: "What is the name of the ghostly presence in 'The Others'?", answer: "The Others" },
+            { question: "Which 2019 film features a family dealing with their doppelgängers?", answer: "Us" },
+            { question: "What is the name of the creature in 'The Thing'?", answer: "The Thing" },
+            { question: "In 'A Quiet Place', what must the family avoid?", answer: "Making noise" },
+            { question: "What is the name of the haunted doll in 'The Conjuring'?", answer: "Annabelle" },
+            { question: "Which film is about a group of friends who are haunted by a curse after a prank?", answer: "Truth or Dare" },
+            { question: "What is the name of the film where a family is haunted by a sinister entity in their new house?", answer: "The Amityville Horror" },
+            { question: "In 'The Grudge', what causes the supernatural occurrences?", answer: "A curse from a vengeful spirit" },
+            { question: "What is the name of the haunted hotel in 'The Shining'?", answer: "The Overlook Hotel" },
+            { question: "In 'The Others', what is the twist ending?", answer: "The family is actually dead" },
+            { question: "What is the name of the creature in 'The Babadook'?", answer: "The Babadook" },
+            { question: "Which film involves a haunted mirror that brings out the worst in people?", answer: "Oculus" },
+            { question: "What is the primary setting for 'The Cabin in the Woods'?", answer: "A remote cabin" },
+            { question: "What is the title of the film involving a cursed videotape that causes death within seven days?", answer: "The Ring" },
+            { question: "In 'The Exorcism of Emily Rose', what is the cause of the disturbances?", answer: "A demonic entity" },
+            { question: "What is the title of the 1980s horror film involving a haunted house?", answer: "The Shining" },
+            { question: "What is the name of the supernatural entity in 'The Ring'?", answer: "The Ring" },
+            { question: "In 'The Witch', what is the family's main fear?", answer: "Witchcraft and the supernatural" },
+            { question: "What is the name of the cursed entity in 'The Conjuring'?", answer: "The Nun" },
+            { question: "What is the primary plot of 'The Babadook'?", answer: "A haunted book" },
+            { question: "In 'The Shining', what is the primary setting?", answer: "The Overlook Hotel" },
+            { question: "What is the name of the haunted mirror in 'Oculus'?", answer: "The Oculus Mirror" },
+            { question: "What is the title of the film involving a haunted house?", answer: "The Haunting" },
+            { question: "What is the primary plot of 'The Shining'?", answer: "A haunted hotel" },
+            { question: "What is the name of the supernatural entity in 'The Ring'?", answer: "The Ring" },
+            { question: "In 'The Witch', what is the family's main concern?", answer: "Witchcraft and the supernatural" },
+            { question: "What is the name of the haunted mirror in 'Oculus'?", answer: "The Oculus Mirror" },
+            { question: "What is the title of the film involving a possessed doll?", answer: "Annabelle" },
+            { question: "What is the name of the entity in 'It'?", answer: "Pennywise" },
+            { question: "In 'The Exorcism of Emily Rose', what is the cause of the disturbances?", answer: "A demonic entity" },
+            { question: "What is the name of the haunted house in 'The Haunting of Hill House'?", answer: "Hill House" }
+        ];
+
+        let shuffledQuestions = [];
+        let questionIndex = 0;
+
+        // Shuffle the questions array
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Initialize questions
+        function initializeQuestions() {
+            shuffledQuestions = shuffleArray([...horrorQuestions]);
+            questionIndex = 0;
+            displayQuestion();
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            if (shuffledQuestions.length === 0) {
+                questionAnswerDiv.innerHTML = "<strong>No more questions!</strong>";
+                return;
+            }
+            const currentQA = shuffledQuestions[questionIndex];
+            questionAnswerDiv.innerHTML = `<strong>Question:</strong> ${currentQA.question}<br><strong>Answer:</strong> ${currentQA.answer}`;
+        }
+
+        // Change color of the yellow box when a color box is clicked
+        greenBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "green";
+        });
+
+        orangeBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "orange";
+        });
+
+        redBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "red";
+        });
+
+        purpleBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "purple";
+        });
+
+        // Generate a random question and display it when the yellow box is clicked
+        yellowBox.addEventListener("click", () => {
+            questionIndex = (questionIndex + 1) % shuffledQuestions.length;
+            displayQuestion();
+        });
+
+        // Initialize questions on page load
+        window.onload = initializeQuestions;
+    </script>
+
+</body>
+</html>
